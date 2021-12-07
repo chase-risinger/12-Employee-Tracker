@@ -35,5 +35,5 @@ VALUES
 
 INSERT INTO department (name)
 VALUES
-('Front of House')
+('Front of House'),
 ('Back of House')
