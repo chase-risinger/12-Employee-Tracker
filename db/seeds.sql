@@ -1,23 +1,39 @@
-DROP TABLE IF EXISTS department;
-DROP TABLE IF EXISTS role;
-DROP TABLE IF EXISTS employee;
+INSERT INTO role (title, salary)
+VALUES
+('head chef', 75000),
+('sous chef', 58000),
+('cook', 33000),
+('dishwasher', 29000),
+('waiter', 42000),
+('bartender', 46000),
+('FOH Manager', 51000),
+('barback', 39000),
+('busser', 36000),
+('host', 34000);
 
-CREATE TABLE employee (
-    id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(30) NOT NULL,
-    last_name VARCHAR(30) NOT NULL,
-    role_id INTEGER NOT NULL,
-    manager_id INTEGER NOT NULL
-);
+INSERT INTO employee (first_name, last_name)
+VALUES 
+('John', 'Smith'),
+('James', 'Fraser'),
+('Lionel', 'Johnson'),
+('Monica', 'Bellucci'),
+('Algernon', 'Blackwood'),
+('Harriet', 'Martineau'),
+('George', 'Harrison'),
+('Paul', 'McCartney'),
+('John', 'Lennon'),
+('Ringo', 'Starr'),
+('Kelly', 'Norris'),
+('Chase', 'Risinger'),
+('Django', 'Reinhound'),
+('Martha', 'Stewart'),
+('Roberto', 'Fabre'),
+('Marque', 'Slap'),
+('Stephan', 'Grapelli'),
+('Starsky', 'Hutch'),
+('Lionel', 'Messi');
 
-CREATE TABLE role (
-    id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(30) NOT NULL,
-    salary DECIMAL NOT NULL,
-    department_id INTEGER NOT NULL
-);
-
-CREATE TABLE department (
-    id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30) NOT NULL
-)
+INSERT INTO department (name)
+VALUES
+('Front of House')
+('Back of House')
