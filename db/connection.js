@@ -11,7 +11,7 @@ const db = mysql.createConnection(
         database: process.env.DB_NAME
 
     },
-    console.log('Connected to the election database.')
+    console.log('Connected to the employee tracker database.')
 );
 
 module.exports = db;
