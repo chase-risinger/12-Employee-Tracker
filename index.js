@@ -44,7 +44,7 @@ const promptUser = () => {
                 case `Add a Department`: addDepartment(); break;
                 case `Add a Role`: addRole(); break;
                 case `Add an Employee`: addEmployee(); break;
-                case `Update an Employee's Role`: employeeModifyRole(); break;
+                case `Update an Employee's Role`: updateEmployeeRole(); break;
                 case `Exit`: connection.end(); break;
             }
         })
@@ -60,7 +60,12 @@ const viewDepartment = () => {
 };
 
 function viewEmployees() {
-    db.query("SELECT * FROM employee;", (err, res) => {
+    const sql = `SELECT employee.*, role.title
+    AS job_title
+    FROM employee
+    LEFT JOIN role
+    ON employee.role_id = role.id`;
+    db.query(sql, (err, res) => {
         if (err) throw err;
         console.table(res)
         promptUser()
@@ -93,6 +98,62 @@ const addDepartment = () => {
 };
 
 
+const updateEmployeeRole = () => {
+    return inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'emp_id',
+                message: 'What is the id number of employee?'
+            },
+            {
+                type: 'list',
+                name: 'role',
+                message: 'What is the new role?',
+                choices: ['cook', 'dishwasher', 'waiter', 'bartender', 'barback', 'busser', 'host']
+            }
+        ]).then(response => {
+            db.query("UPDATE employee SET role_id = ? WHERE id = ?",
+                [turnRoleIntoID(response.role), response.emp_id]
+                , function () {
+                    promptUser()
+                })
+        });
+};
+
+function turnRoleIntoID(role) {
+    if (role == 'cook') {
+        return 3;
+    }
+    else if (role == 'dishwasher') {
+        return 4;
+    }
+    else if (role == 'waiter') {
+        return 5;
+    }
+    else if (role == 'bartender') {
+        return 6;
+    }
+    else if (role == 'barback') {
+        return 8;
+    }
+    else if (role == 'busser') {
+        return 9;
+    }
+    else if (role == 'host') {
+        return 10;
+    }
+}
+
+function turnDepartmentIntoID(dep) {
+    if (dep == 'FOH') {
+        return 1;
+    }
+    else if (dep == 'BOH') {
+        return 2;
+    }
+}
+
 const addRole = () => {
     return inquirer
         .prompt([
@@ -108,15 +169,16 @@ const addRole = () => {
                 message: 'What is the salary of the role?'
             },
             {
-                type: 'input',
+                type: 'list',
                 name: 'department',
-                message: 'What department is the role?'
+                message: 'What department is the role?',
+                choices: ['FOH', 'BOH']
             }
         ]).then(response => {
             db.query("INSERT INTO role SET ?", {
                 title: response.title,
                 salary: response.salary,
-                department_id: 1
+                department_id: turnDepartmentIntoID(response.department)
             }, function () {
                 promptUser()
             })
